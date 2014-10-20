@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ParallaxListView">
+        <attr name="enableZoom" format="boolean"/> <!--default=false-->
+        <attr name="zoomFactor" format="float"/> <!--default=1.0-->
+        <attr name="scrollMultiplier" format="float"/> <!--default=0.5-->
+    </declare-styleable>
+</resources>
