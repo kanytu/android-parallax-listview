@@ -1,118 +1,58 @@
 package com.poliveira.apps.parallaxlistview;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 /**
  * Created by poliveira on 17/10/2014.
  */
-public class ParallaxListView extends ListView implements AbsListView.OnScrollListener
+public class ParallaxListView extends ListView implements ParallaxScrollEvent
 {
 
-    public interface ParallaxScrollListener{
-        /**
-         *
-         * @param offsetPercentage scroll progress, [0,1.0]
-         * @param parallaxView
-         */
-        void onScroll(float offsetPercentage, View parallaxView);
-    }
+    private ParallaxHelper mHelper;
     private CustomRelativeLayout mParallaxWrapper;
     private View mParallaxView;
-    private Parameters mParameters;
-    private ParallaxScrollListener mParallaxScrollListener;
+    private ParallaxScrollEvent mScrollEvent;
+
 
     public ParallaxListView(Context context)
     {
         super(context);
-        initializeParameters(null);
+        mHelper = new ParallaxHelper(context, null);
         init();
     }
 
     private void init()
     {
-        setOnScrollListener(this);
+        mHelper.setParallaxScrollEvent(this);
     }
 
     public ParallaxListView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        initializeParameters(attrs);
+        mHelper = new ParallaxHelper(context, attrs);
         init();
-    }
-
-    public View getParallaxView()
-    {
-        return mParallaxView;
-    }
-
-    private void initializeParameters(AttributeSet attrs)
-    {
-        mParameters = new Parameters();
-        if (attrs == null)
-            return;
-        TypedArray a = getContext().obtainStyledAttributes(attrs,
-                R.styleable.ParallaxListView);
-
-        final int N = a.getIndexCount();
-        for (int i = 0; i < N; ++i)
-        {
-            int attr = a.getIndex(i);
-            switch (attr)
-            {
-                case R.styleable.ParallaxListView_enableZoom:
-                    mParameters.setZoomEnable(a.getBoolean(attr, false));
-                    break;
-                case R.styleable.ParallaxListView_scrollMultiplier:
-                    mParameters.setScrollMultiplier(a.getFloat(attr, 0.5f));
-                    break;
-                case R.styleable.ParallaxListView_zoomFactor:
-                    mParameters.setZoomFactor(a.getFloat(attr, 1.0f));
-                    break;
-            }
-        }
-        a.recycle();
     }
 
     public ParallaxListView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
-        initializeParameters(attrs);
+        mHelper = new ParallaxHelper(context, attrs);
         init();
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState)
-    {
-
-    }
 
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+    protected void onScrollChanged(int l, int t, int oldl, int oldt)
     {
-        if (view.getChildCount() > 0 && mParallaxWrapper!=null)
-        {
-            float currentOffset =  (-mParallaxWrapper.getTop() * mParameters.getScrollMultiplier());
-            mParallaxWrapper.setTranslationY(currentOffset);
-            mParallaxWrapper.setClipY(Math.round(currentOffset));
-            float left = Math.min(1,(currentOffset / (mParallaxWrapper.getHeight()*mParameters.getScrollMultiplier())));
-
-            if(mParameters.isZoomEnable())
-            {
-                float zoom = (left*mParameters.getZoomFactor()) + 1;
-                mParallaxView.setScaleX(zoom);
-                mParallaxView.setScaleY(zoom);
-            }
-            if(mParallaxScrollListener!=null)
-                mParallaxScrollListener.onScroll(left,mParallaxView);
-        }
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (mParallaxWrapper != null)
+            mHelper.onScrollChanged(-mParallaxWrapper.getTop());
     }
 
     /**
@@ -126,26 +66,20 @@ public class ParallaxListView extends ListView implements AbsListView.OnScrollLi
         mParallaxWrapper = new CustomRelativeLayout(getContext());
         mParallaxWrapper.addView(mParallaxView);
         addHeaderView(mParallaxWrapper);
+        mHelper.registerParallax(mParallaxWrapper);
     }
 
-    public ParallaxScrollListener getParallaxScrollListener()
+    @Override
+    public void onScroll(float percentage, float offset, View parallaxView)
     {
-        return mParallaxScrollListener;
+        mParallaxWrapper.setClipY(Math.round(offset));
+        if (mScrollEvent != null)
+            mScrollEvent.onScroll(percentage, offset, mParallaxView);
     }
 
-    public void setParallaxScrollListener(ParallaxScrollListener parallaxScrollListener)
+    public void setScrollEvent(ParallaxScrollEvent scrollEvent)
     {
-        mParallaxScrollListener = parallaxScrollListener;
-    }
-
-    public Parameters getParameters()
-    {
-        return mParameters;
-    }
-
-    public void setParameters(Parameters parameters)
-    {
-        mParameters = parameters;
+        mScrollEvent = scrollEvent;
     }
 
     static class CustomRelativeLayout extends RelativeLayout

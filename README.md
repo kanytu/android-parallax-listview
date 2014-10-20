@@ -16,6 +16,7 @@ android-parallax-listview
 
 **XML usage:**
 
+     <!--Listview-->
      <view
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,13 +26,27 @@ android-parallax-listview
             app:zoomFactor="0.7"
             app:scrollMultiplier="0.5"
      />
-
+     <!--SCrollView-->
+     <view
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.poliveira.apps.parallaxlistview.ParallaxScrollView"
+            app:enableZoom="true"
+            android:id="@+id/parallaxScrollview"
+            app:zoomFactor="0.7"
+            app:scrollMultiplier="0.5"
+     />
 
 **Code usage**
 
+     --Listview--
      ParallaxListView parallaxListView = (ParallaxListView) findViewById(R.id.parallaxListView);
      parallaxListView.setParallaxView(LayoutInflater.from(this).inflate(R.layout.myParallaxView, parallaxListView, false));
 
+     --ScrollView--
+     ParallaxScrollView parallaxScrollView = (ParallaxScrollView) findViewById(R.id.parallaxScrollView);
+     parallaxScrollView.setParallaxView(LayoutInflater.from(this).inflate(R.layout.myParallaxView, parallaxScrollView, false));
 **Output:**
 
 ![alt tag](https://github.com/kanytu/android-parallax-listview/blob/master/screenshots/teste.gif)
+![alt tag](https://github.com/kanytu/android-parallax-listview/blob/master/screenshots/teste2.gif)
