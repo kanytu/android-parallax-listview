@@ -21,9 +21,16 @@ android-parallax-listview
             android:layout_height="match_parent"
             class="com.poliveira.apps.parallaxlistview.ParallaxListView"
             app:enableZoom="true"
+            android:id="@+id/parallaxListview"
             app:zoomFactor="0.7"
             app:scrollMultiplier="0.5"
      />
+
+
+**Code usage**
+
+     ParallaxListView parallaxListView = (ParallaxListView) findViewById(R.id.parallaxListView);
+     parallaxListView.setParallaxView(LayoutInflater.from(this).inflate(R.layout.myParallaxView, parallaxListView, false));
 
 **Output:**
 
