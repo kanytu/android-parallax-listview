@@ -10,64 +10,53 @@ import android.widget.ScrollView;
 /**
  * Created by poliveira on 20/10/2014.
  */
-public class ParallaxScrollView extends ScrollView
-{
+public class ParallaxScrollView extends ScrollView implements ParallaxView {
     private final ParallaxHelper mHelper;
     private RelativeLayout mWrapper;
     private View mInternalView;
 
-    public ParallaxScrollView(Context context)
-    {
+    public ParallaxScrollView(Context context) {
         super(context);
         mHelper = new ParallaxHelper(context, null);
         init();
     }
 
-    public void setScrollEvent(ParallaxScrollEvent scrollEvent)
-    {
-        mHelper.setParallaxScrollEvent(scrollEvent);
-    }
-
-    public ParallaxScrollView(Context context, AttributeSet attrs)
-    {
+    public ParallaxScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mHelper = new ParallaxHelper(context, attrs);
         init();
     }
 
-    public ParallaxScrollView(Context context, AttributeSet attrs, int defStyle)
-    {
+    public ParallaxScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mHelper = new ParallaxHelper(context, attrs);
         init();
     }
 
+    public void setScrollEvent(ParallaxScrollEvent scrollEvent) {
+        mHelper.setParallaxScrollEvent(scrollEvent);
+    }
+
     @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt)
-    {
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         mHelper.onScrollChanged(getScrollY());
     }
 
-    private void init()
-    {
+    private void init() {
 
     }
 
-    private Parameters getParameters()
-    {
+    public Parameters getParameters() {
         return mHelper.getParameters();
     }
 
-    private void setParameters(Parameters params)
-    {
+    public void setParameters(Parameters params) {
         mHelper.setParameters(params);
     }
 
-    public void setParallaxView(View parallaxView)
-    {
-        if (getChildCount() > 0 && getChildAt(0) != null)
-        {
+    public void setParallaxView(View parallaxView) {
+        if (getChildCount() > 0 && getChildAt(0) != null) {
             if (parallaxView.getId() <= 0)
                 parallaxView.setId(Utils.generateId());
             if (mHelper.getParallaxView() != null)
@@ -79,10 +68,8 @@ public class ParallaxScrollView extends ScrollView
     }
 
     @Override
-    public void addView(View child, ViewGroup.LayoutParams params)
-    {
-        if (getChildCount() == 0)
-        {
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        if (getChildCount() == 0) {
             mInternalView = child;
             mWrapper = new RelativeLayout(getContext());
             mWrapper.addView(mInternalView);

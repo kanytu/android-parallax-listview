@@ -3,32 +3,30 @@ package com.poliveira.apps.parallaxlistview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ListView;
 
 /**
- * Created by poliveira on 17/10/2014.
+ * Created by poliveira on 21/10/2014.
  */
-public class ParallaxListView extends ListView implements ParallaxScrollEvent, ParallaxView {
-
+public class ParallaxGridView extends HeaderGridView implements ParallaxScrollEvent, ParallaxView {
     private ParallaxHelper mHelper;
     private CustomRelativeWrapper mParallaxWrapper;
     private View mParallaxView;
     private ParallaxScrollEvent mScrollEvent;
 
 
-    public ParallaxListView(Context context) {
+    public ParallaxGridView(Context context) {
         super(context);
         mHelper = new ParallaxHelper(context, null);
         init();
     }
 
-    public ParallaxListView(Context context, AttributeSet attrs) {
+    public ParallaxGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mHelper = new ParallaxHelper(context, attrs);
         init();
     }
 
-    public ParallaxListView(Context context, AttributeSet attrs, int defStyle) {
+    public ParallaxGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mHelper = new ParallaxHelper(context, attrs);
         init();
@@ -42,14 +40,10 @@ public class ParallaxListView extends ListView implements ParallaxScrollEvent, P
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         if (mParallaxWrapper != null)
-            mHelper.onScrollChanged(-mParallaxWrapper.getTop());
+            mHelper.onScrollChanged(getScrolledY());
     }
 
-    /**
-     * sets the view as a parallax header
-     *
-     * @param v header view
-     */
+
     public void setParallaxView(View v) {
         mParallaxView = v;
         mParallaxWrapper = new CustomRelativeWrapper(getContext());
@@ -78,6 +72,5 @@ public class ParallaxListView extends ListView implements ParallaxScrollEvent, P
     public void setParameters(Parameters params) {
         mHelper.setParameters(params);
     }
-
 
 }

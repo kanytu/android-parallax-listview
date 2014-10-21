@@ -3,24 +3,22 @@ package com.poliveira.apps.parallaxlistview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
  * Created by poliveira on 20/10/2014.
  */
-public class ParallaxHelper
-{
+public class ParallaxHelper {
     private Parameters mParameters;
     private View mParallaxView;
     private ParallaxScrollEvent mParallaxScrollEvent;
 
-    public ParallaxHelper(Context context, AttributeSet attributeSet)
-    {
+    public ParallaxHelper(Context context, AttributeSet attributeSet) {
         initializeParameters(context, attributeSet);
     }
 
-    private void initializeParameters(Context context,AttributeSet attrs)
-    {
+    private void initializeParameters(Context context, AttributeSet attrs) {
         mParameters = new Parameters();
         if (attrs == null)
             return;
@@ -28,11 +26,9 @@ public class ParallaxHelper
                 R.styleable.ParallaxListView);
 
         final int N = a.getIndexCount();
-        for (int i = 0; i < N; ++i)
-        {
+        for (int i = 0; i < N; ++i) {
             int attr = a.getIndex(i);
-            switch (attr)
-            {
+            switch (attr) {
                 case R.styleable.ParallaxListView_enableZoom:
                     mParameters.setZoomEnable(a.getBoolean(attr, false));
                     break;
@@ -47,57 +43,48 @@ public class ParallaxHelper
         a.recycle();
     }
 
-    protected Parameters getParameters()
-    {
+    protected Parameters getParameters() {
         return mParameters;
     }
 
-    protected View getParallaxView()
-    {
+    protected void setParameters(Parameters parameters) {
+        mParameters = parameters;
+    }
+
+    protected View getParallaxView() {
         return mParallaxView;
     }
 
-    protected void setParallaxView(View parallaxView)
-    {
+    protected void setParallaxView(View parallaxView) {
         mParallaxView = parallaxView;
     }
 
-    protected ParallaxScrollEvent getParallaxScrollEvent()
-    {
+    protected ParallaxScrollEvent getParallaxScrollEvent() {
         return mParallaxScrollEvent;
     }
 
-    protected void setParallaxScrollEvent(ParallaxScrollEvent parallaxScrollEvent)
-    {
+    protected void setParallaxScrollEvent(ParallaxScrollEvent parallaxScrollEvent) {
         mParallaxScrollEvent = parallaxScrollEvent;
     }
 
-    protected void onScrollChanged(float scrolled)
-    {
-        if (mParallaxView !=null)
-        {
-            float currentOffset =  (scrolled * mParameters.getScrollMultiplier());
+    protected void onScrollChanged(float scrolled) {
+        Log.v("scrolled", scrolled + "");
+        if (mParallaxView != null) {
+            float currentOffset = (scrolled * mParameters.getScrollMultiplier());
             mParallaxView.setTranslationY(currentOffset);
-            float left = Math.min(1,(currentOffset / (mParallaxView.getHeight()*mParameters.getScrollMultiplier())));
+            float left = Math.min(1, (currentOffset / (mParallaxView.getHeight() * mParameters.getScrollMultiplier())));
 
-            if(mParameters.isZoomEnable())
-            {
-                float zoom = (left*mParameters.getZoomFactor()) + 1;
+            if (mParameters.isZoomEnable()) {
+                float zoom = (left * mParameters.getZoomFactor()) + 1;
                 mParallaxView.setScaleX(zoom);
                 mParallaxView.setScaleY(zoom);
             }
-            if(mParallaxScrollEvent!=null)
-                mParallaxScrollEvent.onScroll(left,currentOffset,mParallaxView);
+            if (mParallaxScrollEvent != null)
+                mParallaxScrollEvent.onScroll(left, currentOffset, mParallaxView);
         }
     }
 
-    protected void registerParallax(View parallaxWrapper)
-    {
+    protected void registerParallax(View parallaxWrapper) {
         mParallaxView = parallaxWrapper;
-    }
-
-    protected void setParameters(Parameters parameters)
-    {
-        mParameters = parameters;
     }
 }
