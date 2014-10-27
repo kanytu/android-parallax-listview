@@ -71,8 +71,8 @@ public class ParallaxScrollView extends ScrollView implements ParallaxView {
     public void addView(View child, ViewGroup.LayoutParams params) {
         if (getChildCount() == 0) {
             mInternalView = child;
-            mWrapper = new RelativeLayout(getContext());
-            mWrapper.addView(mInternalView);
+            mWrapper.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mWrapper.addView(mInternalView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             super.addView(mWrapper, params);
         }
     }
