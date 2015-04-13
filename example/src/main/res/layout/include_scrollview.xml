@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.poliveira.apps.parallaxlistview.ParallaxScrollView"
+        android:id="@+id/view">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="25sp"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id lectus posuere, mollis quam sed, pretium felis. Vivamus et lectus et risus blandit dignissim non at est. Sed eu ipsum turpis. Donec eu sem varius, sodales quam id, posuere libero. Integer finibus lectus nec malesuada aliquam. Pellentesque vel purus massa. Pellentesque sollicitudin augue et nulla lacinia pellentesque. Phasellus efficitur quam a mauris convallis pulvinar. Phasellus egestas vehicula tortor nec elementum. Vestibulum sagittis, ipsum ac molestie semper, nisi elit accumsan velit, lobortis vehicula lectus tellus commodo purus. Quisque vitae dapibus est."
+            android:id="@+id/textView"/>
+    </view>
+
+
+</LinearLayout>

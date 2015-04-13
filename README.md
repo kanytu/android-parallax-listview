@@ -1,6 +1,26 @@
 android-parallax-listview
 =========================
 
+
+**Integration**
+====
+
+**Step 1.** Add the JitPack repository to your build file
+
+   	repositories {
+   	    maven {
+   	        url "https://jitpack.io"
+   	    }
+   	}
+   	
+**Step 2.** Add the dependency
+
+    dependencies {
+    	compile 'com.github.kanytu:android-parallax-listview:v1.1'
+    }
+
+
+
 **Listeners:**
 
     //will be called on scroll. Returns the scroll progression percentage. from 0 to 1.0
